@@ -138,6 +138,7 @@ def test_convert_result():
     assert convert_result('Y') == Result.DRAW
     assert convert_result('Z') == Result.WIN
 
+
 def test_get_result():
     assert get_result(RPS.ROCK, RPS.ROCK) == Result.DRAW
     assert get_result(RPS.ROCK, RPS.PAPER) == Result.LOSE
