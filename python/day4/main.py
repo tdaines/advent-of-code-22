@@ -32,7 +32,7 @@ def part2():
             if left.intersection(right):
                 count += 1
 
-    print(f'In {count} assignment pairs does one range fully contain the other')
+    print(f'{count} assignment pairs overlap')
 
 
 if __name__ == '__main__':
