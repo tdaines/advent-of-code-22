@@ -59,28 +59,24 @@ class Point:
         if diff == (LEFT + LEFT):
             return self + LEFT
 
-        if diff == (RIGHT + RIGHT + UP):
+        if diff == (RIGHT + RIGHT + UP) or \
+                diff == (UP + UP + RIGHT) or \
+                diff == (UP + UP + RIGHT + RIGHT):
             return self + UP + RIGHT
 
-        if diff == (RIGHT + RIGHT + DOWN):
+        if diff == (RIGHT + RIGHT + DOWN) or \
+                diff == (DOWN + DOWN + RIGHT) or \
+                diff == (DOWN + DOWN + RIGHT + RIGHT):
             return self + DOWN + RIGHT
 
-        if diff == (LEFT + LEFT + UP):
+        if diff == (LEFT + LEFT + UP) or \
+                diff == (UP + UP + LEFT) or \
+                diff == (UP + UP + LEFT + LEFT):
             return self + UP + LEFT
 
-        if diff == (LEFT + LEFT + DOWN):
-            return self + DOWN + LEFT
-
-        if diff == (UP + UP + RIGHT):
-            return self + UP + RIGHT
-
-        if diff == (UP + UP + LEFT):
-            return self + UP + LEFT
-
-        if diff == (DOWN + DOWN + RIGHT):
-            return self + DOWN + RIGHT
-
-        if diff == (DOWN + DOWN + LEFT):
+        if diff == (LEFT + LEFT + DOWN) or \
+                diff == (DOWN + DOWN + LEFT) or \
+                diff == (DOWN + DOWN + LEFT + LEFT):
             return self + DOWN + LEFT
 
         raise Exception(f'Unhandled diff: {diff}')
@@ -92,7 +88,7 @@ LEFT = Point(-1, 0)
 RIGHT = Point(1, 0)
 
 
-def main():
+def part1():
     head = Point(0, 0)
     tail = Point(0, 0)
 
@@ -111,5 +107,31 @@ def main():
     print(f'Tail visited {len(visited)} positions')
 
 
+def part2():
+    knots = [Point(0, 0)] * 10
+    tail = knots[-1]
+
+    visited = set()
+    visited.add((tail.x, tail.y))
+
+    with open('input.txt') as f:
+        for line in f:
+            direction = line[0]
+            steps = int(line[2:])
+            for _ in range(steps):
+                # move head
+                knots[0] = knots[0].move(direction)
+
+                # move following knots
+                for i in range(1, len(knots)):
+                    knots[i] = knots[i].follow(knots[i - 1])
+
+                # record tail
+                tail = knots[-1]
+                visited.add((tail.x, tail.y))
+
+    print(f'Tail visited {len(visited)} position{"s" if len(visited) != 1 else ""}')
+
+
 if __name__ == '__main__':
-    main()
+    part2()
